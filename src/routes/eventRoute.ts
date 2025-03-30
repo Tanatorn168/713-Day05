@@ -21,13 +21,19 @@ router.get("/", async (req, res) => {
       }
       res.setHeader("x-total-count", result.count.toString());
       res.json(result.events);
-    } catch (error) {
+    } 
+    catch (error) {
             if (pageNo < 1 || pageSize < 1) {
               res.status(400).send("Invalid pageNo or pageSize");
             } else {
               res.status(500).send("Internal Server Error");
             }
             return;
+        } 
+    finally {
+            console.log(`Request is completed. with pageNo=${pageNo} and pageSize=${pageSize}`);
+        }
+                
         
         
 
