@@ -4,14 +4,16 @@ import type { Event } from "../models/event";
 import exp from "constants";
 const router = express.Router();
 
-router.get("/", async(req, res) => {
-    if (req.query.category) {
+router.get("/", async (req, res) => {
+  if (req.query.pageSize && req.query.pageNo) {
+    const pageSize = parseInt(req.query.pageSize as string);
+    const pageNo = parseInt(req.query.pageNo as string);
+    const events = await service.getAllEventsWithPagination(pageSize, pageNo);
+    const totalEvents = await service.count();
+    res.json({ totalEvents, events });
+  } else if (req.query.category) {
     const category = req.query.category;
-    const filteredEvents = await service.getEventByCategory(category as string);
-    res.json(filteredEvents);
-    } else {
-    res.json(await service.getAllEvents());
-    }
+  }
 });
 
 
